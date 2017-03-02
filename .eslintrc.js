@@ -16,7 +16,6 @@ module.exports = {
   ],
     // add your custom rules here
     'rules': {
-        "indent": ["error", 4],
-        "no-unused-vars": ["warn"]
+        "indent": ["error", 4]
     }
 }

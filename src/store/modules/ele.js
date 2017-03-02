@@ -1,5 +1,6 @@
 import Ele from '@/struct/ele'
 import Tree from '@/struct/tree'
+import {exec} from '@/util/action'
 
 const tree = new Tree(new Ele())
 
@@ -12,12 +13,33 @@ const actions = {}
 
 const mutations = {
     addNode: function (state) {
-        state.active = state.active.addChild(new Ele())
+        (function () {
+            var node = Tree.createNode(new Ele());
+            var active = state.active;
+            exec(() => {
+                state.active = active.addChild(node);   
+            }, () => {
+                state.active = active;
+                node.remove();
+            })
+        })();
     },
     deleteNode: function (state) {
         if(state.active == tree.head) return;
-        state.active.remove();
-        state.active = tree.head;
+        
+        (function () {
+            var active = state.active,
+                parent = active.parent;
+            
+            exec(() => {
+                state.active = active.parent;
+                active.remove();
+            }, () => {
+                parent.addChild(active);
+                state.active = active;
+            });    
+        })();
+        
     },
     updateActive: function (state, id) {
         tree.search((node) => {

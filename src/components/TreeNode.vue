@@ -14,7 +14,7 @@
     }
 </style>
 <template>
-    <div :class="{'el-tree-node': true, 'is-expanded': isExpand, 'is-current': active}">
+    <div draggable="true" @dragstart.stop="onDragStart($event)" :class="{'el-tree-node': true, 'is-expanded': isExpand, 'is-current': active}">
         <div @click="$store.commit('updateActive', data.id);" class="el-tree-node__content" :style="{'padding-left': level * 16 + 'px'}">
             <span v-if="data.children.length > 0" :class="{'el-tree-node__expand-icon': true, 'expanded': isExpand}" @click="toggle"></span>
             <span v-else style="margin-left: 32px"></span>
@@ -52,6 +52,11 @@
         methods: {
             toggle: function () {
                 this.isExpand = !this.isExpand;
+            },
+            
+            onDragStart: function (event) {
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData('id', this.data.id);
             }
         },
         

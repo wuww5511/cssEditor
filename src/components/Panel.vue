@@ -6,12 +6,15 @@
         <div class="panel__controls">
             <button @click="$store.commit('addNode')">Add</button>
             <button @click="$store.commit('deleteNode')">Delete</button>
+            <button @click="undo()">undo</button>
+            <button @click="redo()">redo</button>
         </div>
     </div>
 </template>
 <script>
     import {node2state} from '@/util/tree'
     import Tree from '@/components/Tree'
+    import {redo, undo} from '@/util/action'
     
     export default {
         data: function () {
@@ -21,6 +24,8 @@
         },
         
         methods: {
+            redo,
+            undo
         },
         
         computed: {

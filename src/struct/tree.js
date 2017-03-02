@@ -5,15 +5,16 @@ class Node {
         this.children = children;
     }
     
-    addChild (content = null) {
-        var child = new Node({content, parent: this});
-        this.children.push(child);
-        return child;
+    addChild (node) {
+        node.parent = this;
+        this.children.push(node);
+        return node;
     }
     
     removeChild (node) {
         for(let i = 0; i < this.children.length; i++) {
             if(this.children[i] === node) {
+                node.parent = null;
                 this.children.splice(i, 1);
                 break;
             }
@@ -30,15 +31,6 @@ class Tree {
         this.head = new Node({content});
     }
     
-    addNode ({content = null, parent = null}) {
-        if(parent) {
-            return parent.addChild(content);
-        }
-        else {
-            return this.head.addChild(content);
-        }
-    }
-    
     search (callback = () => {}) {
         var stack = [this.head];
         while(stack.length > 0) {
@@ -49,5 +41,9 @@ class Tree {
     }
     
 }
+
+Tree.createNode = function (content = {}) {
+    return new Node({content});
+};
 
 export default Tree
