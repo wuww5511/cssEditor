@@ -10,6 +10,7 @@ Vue.use(Vuex)
 Vue.use(ElementUI)
 
 import store from '@/store/store'
+import '@/assets/common.css'
 
 Vue.config.productionTip = false
 
