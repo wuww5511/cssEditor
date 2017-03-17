@@ -46,4 +46,7 @@ Tree.createNode = function (content = {}) {
     return new Node({content});
 };
 
-export default Tree
+export {
+    Tree,
+    Node
+}

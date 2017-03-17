@@ -1,5 +1,5 @@
 import Klass from '@/struct/klass'
-import {exec} from '@/util/action'
+import {exec, Action} from '@/util/action'
 
 const state = {
     klasses: []
@@ -18,27 +18,49 @@ function del (id) {
     }
 }
 
+function get (id) {
+    var arr= state.klasses;
+    for(let i = 0; i < arr.length; i++) {
+        if(arr[i].id == id){
+            return arr[i];
+        }
+    }
+}
+
 const mutations = {
     addKlass: ({klasses}, {name, style}) => {
-        (function () {
-            var klass = new Klass(name, style);
-            exec(() => {
-                add(klass); 
-            }, () => {
-                del(klass.id);
-            });
-        })();
+        
+        var action = new Action({
+            klass: new klass(name, style)
+        })
+        
+        action.onExec(function () {
+            add(this.klass);
+        });
+        
+        action.onUndo(function () {
+            del(this.klass.id);
+        });
+        
+        exec(action);
+        
     },
     
     deleteKlass: (state, id) => {
-        (function () {
-            var klass = null;
-            exec(() => {
-                klass = del(id); 
-            }, () => {
-                if(klass) add(klass);
-            });
-        })();
+        
+        var action = new Action({
+            klass: get(id)
+        });
+        
+        action.onExec(function () {
+            del(this.klass.id);
+        });
+        
+        action.onUndo(function () {
+            add(this.klass);
+        });
+        
+        exec(action);
     },
     
     updateKlass: () => {

@@ -6,9 +6,8 @@ var max = 10;
 //已撤销的操作
 var undos = [];
 
-function exec (...args) {
+function exec (action) {
     undos = [];
-    var action = new Action(...args);
     actions.push(action);
     action.exec();
 }
@@ -32,5 +31,6 @@ function redo () {
 export {
     redo,
     undo,
-    exec
+    exec,
+    Action
 };

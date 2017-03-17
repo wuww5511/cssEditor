@@ -1,7 +1,16 @@
+function f () {}
+
 class Action {
-    constructor (todo = () => {}, undo = () => {}) {
-        this.todo = todo;
-        this.undo = undo;
+    constructor (data = {}) {
+        Object.assign(this, data);
+    }
+    
+    onExec (callback) {
+        this.todo = callback || f;
+    }
+    
+    onUndo (callback) {
+        this.undo = callback || f;
     }
     
     exec () {
